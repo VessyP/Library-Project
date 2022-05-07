@@ -1,0 +1,4 @@
+payment_method, age_requirement, max_limit
+"cash",0,20
+"credit card",18,0
+"PayPal",18,0
