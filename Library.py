@@ -17,7 +17,7 @@ profession.Profession.get_user_role(user_role)
 while user_role == 1:
     try:
         choice = int(input('''What would you like to do:
-              press 1 to check how many books are issues,
+              press 1 to check how many books are issued,
               2 to search for a specific book,
               3 to verify a member,
               4 to check payments,
@@ -48,7 +48,6 @@ while user_role == 2:
         if choice == 1:
             profession.Vendor.check_issued_books()
         elif choice == 2:
-            profession.Vendor.initiate_from_csv()
             profession.Vendor.payment_details()
         elif choice == 3:
             print("Thank you using our library.")

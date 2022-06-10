@@ -1,4 +1,5 @@
 import csv
+import pandas as pd
 
 import BookShelf
 
@@ -45,7 +46,7 @@ class Librarian(Profession):
 
     def verify_a_member():
         approved_universities = ["Sofia University", "Technical University", "New Bulgarian University"]
-        user_univercity = input("Please enter the name of your university.")
+        user_univercity = input("Please enter the name of your university:")
         if user_univercity in approved_universities:
             print("You are verified as a member of our Library.")
         else:
@@ -69,19 +70,6 @@ class Vendor(Profession):
     def __init__(self):
         self.name = input("How would you like to be called: ")
 
-    @classmethod
-    def initiate_from_csv(cls):
-        with open('PaymentDetails.csv', 'r') as f:
-            file = csv.DictReader('PaymentDetails.csv')
-            payment_method = []
-            age_requirement = []
-            max_limit = []
-
-            for col in file:
-                payment_method.append(col['payment_method'])
-                age_requirement.append(col['age_requirement'])
-                max_limit.append(col['max_limit'])
-
     def check_issued_books():
         issued_books_count = 0
         for book in BookShelf.books:
@@ -95,25 +83,31 @@ class Vendor(Profession):
         print()
 
     def payment_details():
+        column_names = ["payment_method", "age_requirement", "max_limit"]
+        df = pd.read_csv("PaymentDetails.csv", names=column_names)
+        payment_method = df.payment_method.to_list()
+        age_requirement = df.age_requirement.to_list()
+        max_limit = df.max_limit.to_list()
+
         payment_choice = int(input("How would you like to pay? Please enter 1 for cash,2 for Credit Card, "
                                    "3 for PayPal: "))
         if payment_choice == 1:
             print(
-                f"You can pay by {Profession.payment_method[1]} until you reach the limit of {Profession.Vendor.max_limit[1]} BGN")
+                f"You can pay by {payment_method[1]} until you reach the limit of {float(max_limit[1])} BGN")
         elif payment_choice == 2:
             age = int(input("Please share your age: "))
-            if age >= Profession.Vendor.age_requirement[2]:
+            if age >= int(age_requirement[2]):
                 print(
-                    f"You can pay by {Profession.Vendor.payment_method[2]} until you reach the limit of {Profession.Vendor.max_limit[2]} BGN")
+                    f"You can pay by {payment_method[2]} with a minimum limit of {float(max_limit[2])} BGN")
             else:
                 print(
-                    f"You are too young to use this payment method. Try again after {18 - age} years. For now you can "
+                    f"You are too young to use this payment method. Try again after {18 - int(age)} years. For now you can "
                     f"pay by cash.")
         elif payment_choice == 3:
             age = int(input("Please share your age: "))
-            if age >= Profession.Vendor.age_requirement[3]:
+            if age >= int(age_requirement[3]):
                 print(
-                    f"You can pay by {Profession.Vendor.payment_method[3]} until you reach the limit of {Profession.Vendor.max_limit[3]} BGN")
+                    f"You can pay by {payment_method[3]} with a minimum limit of {float(max_limit[3])} BGN")
             else:
                 print(
                     f"You are too young to use this payment method. Try again after {18 - age} years. For now you can "
